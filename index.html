@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat">
+
+    <title>Красивые букивы</title>
+
+    <style>
+      :root {
+        --bg-color: #212121;
+        --second-bg-color: #151515;
+        --text-color: #fcfcfc;
+        --accent-color: #a880ff;
+      }
+    html, body {
+        padding: 0;
+        margin: 0;
+        font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+    .flex {display: flex;}
+    .flex-col {flex-direction: column;}
+    .flex-justify-center {justify-content: center;}
+    .flex-justify-around {justify-content: space-around;}
+    .flex-items-center {align-items: center;}
+    .fullpage{min-height: 100vh;}
+
+    .replacer {
+      justify-content: space-between;
+    }
+
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: 0.25s ease;
+    }
+    a:hover {
+      text-shadow: 0 0 1rem var(--accent-color);
+    }
+    textarea, .edited-text {
+      font-family: Montserrat;
+      width: 35vw;
+      min-height: 50vh;
+      resize: none;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
+      outline: none;
+
+      background-color: var(--second-bg-color);
+      color: var(--text-color);
+
+      padding: 1rem;
+      border-radius: 1rem;
+      margin: 0.5rem;
+      border: 0;
+      overflow: hidden;
+    }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const originalCharacters = [
+        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","А","Б","В","Г","Д","Е","Ё","Ж","З","И","Й","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я","1","2","3","4","5","6","7","8","9","0"
+      ];
+
+      const replacedCharacters = [
+        "ᴀ","ʙ","ᴄ","ᴅ","ᴇ","ꜰ","ɢ","ʜ","ɪ","ᴊ","ᴋ","ʟ","ᴍ","ɴ","ᴏ","ᴘ","ǫ","ʀ","ꜱ","ᴛ","ᴜ","ᴠ","ᴡ","x","ʏ","ᴢ","ᴀ","б","ʙ","ᴦ","д","ᴇ","ё","ж","з","и","й","ᴋ","л","ʍ","н","о","п","р","ᴄ","ᴛ","у","ɸ","х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я","₁","₂","₃","₄","₅","₆","₇","₈","₉","₀"
+    ];
+
+      const replaceMap = Object.fromEntries(
+        originalCharacters.map((char, index) => [
+          char,
+          replacedCharacters[index],
+        ])
+      );
+
+      function replaceCharacters(input) {
+        return input
+          .split("")
+          .map((char) => replaceMap[char] || char)
+          .join("");
+      }
+
+      const { useState } = React;
+
+      function Application() {
+        const [text, setText] = useState("");
+        const replaceText = (event) => {
+          setText(
+            replaceCharacters(event.target.value.toUpperCase())
+          );
+        };
+
+        return (
+          <div class="flex flex-col flex-items-center flex-justify-around fullpage">
+            <h1>Маленькие заглавные буквы</h1>
+            <div class="replacer flex">
+              <textarea onChange={replaceText} />
+              <pre class="edited-text">{text}</pre>
+            </div>
+            
+            <footer class="flex flex-justify-center">
+              <p><a href="https://drakoshaslv.ru">Дракоша (Солевой)</a>, © 2024 век до н.э.</p>
+            </footer>
+          </div>
+        );
+      }
+
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<Application />);
+    </script>
+  </body>
+</html>
